@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CPA復習">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>CPA復習トラッカー</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#687386;--line:#e4e8f0;--blue:#315efb;--green:#138456;--red:#b42318;--amber:#9a4d00}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif}
+main{max-width:1120px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 18px}.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--muted);font-weight:800}h1{font-size:27px;margin:5px 0}h2{font-size:17px;margin:0 0 13px}.sub{font-size:13px;color:var(--muted);line-height:1.55}.pill{background:#eaf0ff;color:#2449d8;border-radius:99px;padding:7px 10px;font-size:12px;font-weight:800;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px}.stat small{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:29px;margin:2px 0}.stat span{font-size:11px;color:var(--muted)}
+.notice{background:#edf3ff;color:#2846a6;border-radius:13px;padding:12px 14px;font-size:12px;line-height:1.65;margin-bottom:14px}.status{display:none;padding:13px 14px;border-radius:13px;margin:0 0 14px;font-size:13px;line-height:1.65}.status.show{display:block}.status.success{background:#eaf8ef;color:#17663a;border:1px solid #bce7c9}.status.error{background:#fff0ef;color:#a12a22;border:1px solid #ffd0cc}.status strong{display:block;font-size:14px;margin-bottom:3px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}.panel{margin-bottom:14px}.field{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}.formgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}input,select{width:100%;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid #d4dae6;border-radius:11px;padding:12px;min-height:46px}button{font:inherit;border:0;border-radius:12px;padding:12px 14px;font-weight:750;cursor:pointer;min-height:44px;touch-action:manipulation}.primary{background:var(--blue);color:white;width:100%;margin-top:12px}.secondary{background:#eef1f7;color:#344054}.danger{background:#fff0ef;color:var(--red)}.filterbar{display:flex;gap:7px;overflow-x:auto;padding:0 0 8px;margin-bottom:4px}.filterbar button{white-space:nowrap;flex-shrink:0;background:#f0f2f7;color:#475467;padding:9px 11px;font-size:12px}.filterbar button.active{background:#eaf0ff;color:#2449d8;box-shadow:inset 0 0 0 1px #cbd7ff}
+.taskgroup{margin:5px 0 13px}.grouphead{font-size:12px;font-weight:800;color:var(--muted);margin:8px 0}.task{display:flex;align-items:flex-start;gap:11px;padding:13px 0;border-top:1px solid var(--line)}.check{width:28px;height:28px;min-width:28px;border:2px solid #aab4c5;border-radius:9px;padding:0;margin-top:0;background:white;color:white;font-size:17px;line-height:1}.task.done .check{background:var(--green);border-color:var(--green)}.taskbody{flex:1;min-width:0}.tasktitle{font-weight:800;font-size:14px;line-height:1.45}.task.done .tasktitle{text-decoration:line-through;color:#98a2b3}.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;color:var(--muted);font-size:11px}.tag{background:#f0f2f7;border-radius:6px;padding:4px 7px}.tag.overdue{background:#fff0ef;color:var(--red)}.tag.today{background:#fff4dd;color:var(--amber)}.empty{font-size:13px;color:var(--muted);padding:12px 0;line-height:1.6}.lecture{display:flex;align-items:center;gap:9px;padding:12px 0;border-top:1px solid var(--line)}.lecture .info{flex:1;min-width:0}.lecture strong{font-size:14px;overflow-wrap:anywhere}.lecture small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:4px}.delete{padding:8px 10px;background:#f4f5f8;color:#667085;font-size:12px;min-height:38px}.hint{font-size:12px;color:var(--muted);line-height:1.65;margin:9px 0 0}.foot{font-size:11px;color:var(--muted);line-height:1.7;text-align:center;margin:20px 8px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.actions button{width:100%}.tiny{font-size:11px;color:var(--muted)}
+@media(min-width:760px){main{padding:28px 28px 44px}.workspace{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.stats{gap:14px}.panel{padding:20px}.tasktitle,.lecture strong{font-size:15px}}
+@media(max-width:430px){main{padding-left:12px;padding-right:12px}.formgrid{grid-template-columns:1fr}h1{font-size:24px}.head{align-items:flex-start}.pill{font-size:10px}.stat,.panel{padding:13px}.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">CPA STUDY TRACKER</div>
+<div class="head"><div><h1>今日やること</h1><div id="today" class="sub"></div></div><div class="pill">毎日2講ペース</div></div>
+<div class="stats"><div class="stat"><small>今日やる復習</small><strong id="dueCount">0</strong><span>未完了・繰越分を含む</span></div><div class="stat"><small>登録した講義</small><strong id="lectureCount">0</strong><span>短答・論文の全科目</span></div></div>
+<div class="notice"><b>未完了の復習は自動で繰り越し！</b><br>期限を過ぎた復習も、チェックを付けるまで「今日やること」に残ります。講義を登録すると1日後・3日後・7日後の予定が自動作成されます。</div>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+<div class="workspace">
+<div>
+<section class="panel"><h2>講義を登録</h2>
+<div class="formgrid">
+<label class="field">試験区分<select id="stage"><option value="short">短答式</option><option value="essay">論文式</option></select></label>
+<label class="field">科目<select id="subject"></select></label>
+<label class="field">講義番号<input id="lectureNo" placeholder="例：第1講" maxlength="50"></label>
+<label class="field">勉強した日<input id="studyDate" type="date"></label>
+<label class="field" style="grid-column:1/-1">メモ（任意）<input id="note" placeholder="例：連結会計・苦手な仕訳"></label>
+</div>
+<button class="primary" id="addBtn">＋ 講義を登録して復習日を作る</button>
+<p class="hint">1日に2講受けたら、それぞれ登録してね。登録後に科目・講義番号・復習日を確認できるよ。</p>
+</section>
+<section class="panel"><h2>今日やることリスト</h2><p class="sub">終わったら左のチェックをタップ。未チェックは翌日以降も繰り越されるよ。</p><div id="filters" class="filterbar"></div><div id="tasks"></div></section>
+</div>
+<div>
+<section class="panel"><h2>登録した講義</h2><div id="lectures"></div><div class="actions"><button class="secondary" id="exportBtn">バックアップ保存</button><button class="secondary" id="importBtn">バックアップ読込</button></div><input id="importFile" type="file" accept="application/json,.json" hidden><p class="hint">iPhoneとiPadのデータを共有するには、バックアップ保存→もう一方で読込。端末間の自動同期はまだありません。</p></section>
+<section class="panel"><h2>アプリとして追加する</h2><p class="sub">このファイル単体では、ホーム画面に追加しても通常のWebページとして開く場合があります。下のファイル一式をHTTPS対応のWebサーバーに公開すると、ホーム画面から起動できるWebアプリ（PWA）として使えるよ。</p><button class="secondary" id="installHelp" style="width:100%">ホーム画面への追加方法</button><div id="installInstructions" class="hint" hidden>1. アプリ一式をHTTPS対応のホスティングに公開。<br>2. iPhone/iPadのSafariで公開URLを開く。<br>3. 共有ボタン →「ホーム画面に追加」。<br>※プッシュ通知は別途通知サービスの設定が必要です。</div></section>
+</div>
+</div>
+<div class="foot">データはこの端末のブラウザに保存されます。大切な記録は定期的にバックアップしてね。<br>このアプリは学習管理用で、CPA公式アプリではありません。</div>
+</main>
+<script>
+const $=id=>document.getElementById(id), key='cpaReviewTracker_v2';
+const subjects={short:['財務会計論','管理会計論','監査論','企業法'],essay:['会計学（財務会計論）','会計学（管理会計論）','監査論','企業法','租税法','経営学（選択科目）','経済学（選択科目）','民法（選択科目）','統計学（選択科目）']};
+let data=[],filter='すべて';
+const localDate=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
+const today=localDate(new Date());
+$('today').textContent=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+$('studyDate').value=today;
+try{data=JSON.parse(localStorage.getItem(key)||localStorage.getItem('cpaReviewTracker_v1')||'[]');if(!Array.isArray(data))data=[];data=data.map(l=>({...l,stage:l.stage|| (String(l.subject||'').includes('選択科目')||String(l.subject||'').includes('租税法')||String(l.subject||'').includes('会計学')?'essay':'short'),reviews:Array.isArray(l.reviews)?l.reviews:[]}));}catch(e){data=[]}
+function save(){try{localStorage.setItem(key,JSON.stringify(data));render()}catch(e){showStatus('error','保存できませんでした','ブラウザの保存設定や空き容量を確認してね。')}}
+function addDays(date,n){let d=new Date(date+'T12:00:00');d.setDate(d.getDate()+n);return localDate(d)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function refreshSubjects(){const stage=$('stage').value,sel=$('subject'),old=sel.value;sel.innerHTML=subjects[stage].map(s=>`<option>${esc(s)}</option>`).join('');if(subjects[stage].includes(old))sel.value=old}
+$('stage').addEventListener('change',refreshSubjects);refreshSubjects();
+function renderFilters(){const all=['すべて',...new Set(data.map(l=>l.subject))];if(!all.includes(filter))filter='すべて';$('filters').innerHTML=all.map(s=>`<button class="${s===filter?'active':''}" data-filter="${esc(s)}">${esc(s)}</button>`).join('');$('filters').querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;render()}))}
+function render(){
+ renderFilters();
+ let tasks=[];data.forEach(l=>l.reviews.forEach((r,i)=>{if(!r.done&&r.date<=today&&(filter==='すべて'||filter===l.subject))tasks.push({l,r,i})}));
+ tasks.sort((a,b)=>a.r.date.localeCompare(b.r.date)||a.l.subject.localeCompare(b.l.subject,'ja')||a.l.no.localeCompare(b.l.no,'ja'));
+ $('dueCount').textContent=tasks.length;$('lectureCount').textContent=data.length;
+ if(!tasks.length){$('tasks').innerHTML='<div class="empty">未完了の復習はないよ！🎉<br>今日の勉強が終わったら、新しい講義を登録しよう。</div>'}
+ else {
+  const overdue=tasks.filter(t=>t.r.date<today),tod=tasks.filter(t=>t.r.date===today);
+  const card=(t)=>`<div class="task"><button class="check" aria-label="復習を完了にする" title="完了にする" onclick="complete('${t.l.id}',${t.i})"></button><div class="taskbody"><div class="tasktitle">${esc(t.l.subject)} ${esc(t.l.no)}</div><div class="meta"><span class="tag ${t.r.date<today?'overdue':'today'}">${t.r.date<today?'繰越・期限 '+t.r.date:'今日やる'}</span><span class="tag">${t.i===0?'翌日復習':t.i===1?'3日後復習':'7日後復習'}</span>${t.l.stage?`<span class="tag">${t.l.stage==='short'?'短答式':'論文式'}</span>`:''}${t.l.note?`<span class="tag">${esc(t.l.note)}</span>`:''}</div></div></div>`;
+  $('tasks').innerHTML=(overdue.length?`<div class="taskgroup"><div class="grouphead">⚠️ 前日までの繰越（${overdue.length}件）</div>${overdue.map(card).join('')}</div>`:'')+(tod.length?`<div class="taskgroup"><div class="grouphead">☀️ 今日が期限（${tod.length}件）</div>${tod.map(card).join('')}</div>`:'');
+ }
+ $('lectures').innerHTML=data.length?[...data].reverse().map(l=>`<div class="lecture"><div class="info"><strong>${esc(l.subject)} ${esc(l.no)}</strong><small>${l.stage==='essay'?'論文式':'短答式'} · 学習日：${esc(l.studyDate)}<br>復習 ${l.reviews.filter(r=>r.done).length}/${l.reviews.length} 完了${l.note?' · '+esc(l.note):''}</small></div><button class="delete" onclick="removeLecture('${l.id}')">削除</button></div>`).join(''):'<div class="empty">まだ講義が登録されていないよ。</div>';
+}
+window.complete=(id,i)=>{let l=data.find(x=>x.id===id);if(l&&l.reviews[i]){l.reviews[i].done=true;l.reviews[i].completedAt=today;save();showStatus('success','チェック完了！',`${esc(l.subject)} ${esc(l.no)} の復習を完了にしたよ。未完了のタスクだけが一覧に残ります。`)}};
+window.removeLecture=id=>{const l=data.find(x=>x.id===id);if(l&&confirm(`${l.subject} ${l.no} と、その復習予定をすべて削除する？この操作は取り消せないよ。`)){data=data.filter(x=>x.id!==id);save();showStatus('success','削除しました',`${esc(l.subject)} ${esc(l.no)} と関連する復習予定を削除したよ。`)}};
+function showStatus(type,title,message){const el=$('status');el.className='status show '+type;el.innerHTML='<strong>'+esc(title)+'</strong>'+message;el.scrollIntoView({behavior:'smooth',block:'nearest'})}
+$('addBtn').addEventListener('click',()=>{
+ const stage=$('stage').value,subject=$('subject').value,no=$('lectureNo').value.trim(),date=$('studyDate').value,note=$('note').value.trim();
+ if(!no){showStatus('error','講義番号を入力してね','例：「第1講」「企業法 第2回」などを入力してね。');$('lectureNo').focus();return}
+ if(!date){showStatus('error','勉強した日を選んでね','登録する講義を勉強した日を選択してね。');$('studyDate').focus();return}
+ if(date>today&&!confirm('勉強した日が未来の日付になっているよ。このまま登録する？'))return;
+ if(data.some(l=>l.stage===stage&&l.subject===subject&&l.no.toLowerCase()===no.toLowerCase()&&l.studyDate===date)&&!confirm('同じ科目・講義番号・日付の登録があるよ。重複して登録する？'))return;
+ const lecture={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),stage,subject,no,studyDate:date,note,reviews:[1,3,7].map(n=>({date:addDays(date,n),done:false}))};
+ data.push(lecture);
+ try{localStorage.setItem(key,JSON.stringify(data))}catch(e){data.pop();showStatus('error','保存できなかったよ','ブラウザの保存容量や設定を確認してね。');return}
+ render();
+ const reviewDates=lecture.reviews.map((r,i)=>`${['翌日','3日後','7日後'][i]}：${r.date}`).join(' ／ ');
+ showStatus('success','登録しました！',`${esc(stage==='short'?'短答式':'論文式')}・${esc(subject)} ${esc(no)} を登録したよ。<br>勉強した日：${esc(date)}${note?'<br>メモ：'+esc(note):''}<br>復習予定：${reviewDates}<br>入力欄はクリアしたよ。続けて次の講義も登録できるよ。`);
+ $('lectureNo').value='';$('studyDate').value=today;$('note').value='';$('lectureNo').blur();
+});
+$('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='cpa-review-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);showStatus('success','バックアップを作成しました','ダウンロードしたJSONファイルを大切に保管してね。')});
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const incoming=JSON.parse(await file.text());if(!Array.isArray(incoming)||!incoming.every(l=>l&&l.id&&l.subject&&l.no&&Array.isArray(l.reviews)))throw new Error('format');if(!confirm('今の講義データを、バックアップの内容に置き換える？'))return;data=incoming.map(l=>({...l,stage:l.stage||(subjects.essay.includes(l.subject)?'essay':'short')}));save();showStatus('success','読み込みました','バックアップの講義データを読み込んだよ。')}catch(err){showStatus('error','読み込めませんでした','CPA復習トラッカーのJSONバックアップを選んでね。')}finally{e.target.value=''}});
+$('installHelp').addEventListener('click',()=>{$('installInstructions').hidden=!$('installInstructions').hidden});
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script></body></html>
